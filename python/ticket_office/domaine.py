@@ -1,13 +1,17 @@
 def check_available_seats(train_data):
-    available_seats = (s 
+    available_seats = [s 
         for s in train_data["seats"].values() 
-        if s["coach"] == "A" and not s["booking_reference"]) 
+        if s["coach"] == "A" and not s["booking_reference"]]
+    
+    print("available_seats",available_seats)
     return available_seats
 
 def reserve_seats(available_seats, seat_count):
     to_reserve = []
-    for i in range(seat_count):
-        to_reserve.append(next(available_seats))
+    for seat in available_seats:
+        if len(to_reserve) < seat_count:
+            to_reserve.append(seat)
+            
     return to_reserve
 
 def create_reservation(to_reserve, train_id, booking_reference):
@@ -17,5 +21,3 @@ def create_reservation(to_reserve, train_id, booking_reference):
         "booking_reference": booking_reference,
         "seats": seat_ids
     }
-
-

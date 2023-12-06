@@ -1,6 +1,8 @@
 import json
 import requests
 
+from domaine import check_available_seats
+
 
 def test_reserve_seats_from_empty_train():
     train_id = "express_2000"
@@ -54,8 +56,55 @@ def test_reserve_four_additional_seats():
 #     reservation = response.json()
 
 #     len(reservation["seats"])
-
+    
+    
+# def test_check_available_seats_2():
+#     train_data = {
+#         "seats": {
+#             "1A": {"coach": "A", "booking_reference": "REF1234"},
+#             "2A": {"coach": "A", "booking_reference": None}, 
+#             "3A": {"coach": "A", "booking_reference": None}  
+#         }
+#     }
+#     expected = ["2A", "3A"]
+    
+#     actual = list(check_available_seats(train_data))
+    
+#     # Assertions
+#     assert all(seat in actual for seat in expected)
+#     assert len(expected) == len(actual)
 
     
+def test_check_available_seats_3():
 
+    train_data = {
+        "seats": {
+            "1A": {"coach": "A", "booking_reference": "REF1234"},
+            "2A": {"coach": "A", "booking_reference": None}, 
+            "3A": {"coach": "A", "booking_reference": None}  
+        }
+    }
+
+    expected = ["2A", "3A"]
+
+    available_seats = check_available_seats(train_data)
     
+    actual = [seat for seat in available_seats]
+
+    assert all(seat in actual for seat in expected) 
+    assert len(expected) == len(actual)
+    
+def test_check_available_seats_4():
+    train_data = {
+        "seats": {
+            "1A": {"coach": "A", "booking_reference": "REF1234"},
+            "2A": {"coach": "A", "booking_reference": None}, 
+            "3A": {"coach": "A", "booking_reference": None}  
+        }
+    }
+    
+    expected = (["coach": "A", "booking_reference": None], ["coach": "A", "booking_reference": None])
+
+    actual = check_available_seats(train_data)
+    
+    assert expected == actual
